@@ -82,13 +82,7 @@ export default new Vuex.Store({
     },
 
     async getCenters({commit}) {
-      await axios.get('Center/GetCentersAll', {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json;charset=utf-8;v=1.0",
-          "Ocp-Apim-Subscription-Key": "b685b4a07a274f5db69aaf06c32f6fae"
-        }
-      })
+      await axios.get('Center/GetCentersAll')
       .then((res) => {
         if (res.status === 200) {
           commit('SET_CENTERS', res.data)
@@ -97,9 +91,7 @@ export default new Vuex.Store({
     },
 
     updateCenter({dispatch}, center) {
-      axios.put('Center/UpdateCenter', {
-        data: center
-      })
+      axios.put('Center/UpdateCenter', center)
       .then((res) => {
         if (res.status === 200) {
           dispatch('getCenters')
@@ -116,17 +108,29 @@ export default new Vuex.Store({
       })
     },
 
-    async getGreenways({commit}) {
-      await axios.get('Greenway/GetGreenwaysAll', {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json;charset=utf-8;v=1.0",
-          "Ocp-Apim-Subscription-Key": "b685b4a07a274f5db69aaf06c32f6fae"
+    deleteCenter({dispatch}, center) {
+      axios.post('Center/DeleteCenter', center)
+      .then((res) => {
+        if (res.status === 200) {
+          Vue.toasted.show("Center Deleted").goAway(1200)
         }
       })
+    },
+
+    async getGreenways({commit}) {
+      await axios.get('Greenway/GetGreenwaysAll')
       .then((res) => {
         if (res.status === 200) {
           commit('SET_GREENWAYS', res.data)
+        }
+      })
+    },
+
+    async updateGreenway({dispatch}, greenway) {
+      await axios.post('Greenway/UpdateGreenway', greenway)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch('getGreenways')
         }
       })
     }
