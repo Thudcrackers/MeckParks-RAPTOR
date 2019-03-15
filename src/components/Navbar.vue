@@ -14,7 +14,7 @@
 
         <div id="navbarMenu" class="navbar-menu">
             <div class="navbar-start">
-                <router-link to="/centers" class="navbar-item">Centers</router-link>
+                <router-link to="/centers" class="navbar-item" :page="'list'">Centers</router-link>
                 <router-link to="/greenways" class="navbar-item">Greenways</router-link>
             </div>
 

@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Centers from './views/Centers.vue'
 import Login from './views/Login.vue'
 import Greenways from './views/Greenways.vue'
+import ShowCenter from './views/ShowCenter.vue'
+import ShowAmenity from './views/ShowAmenity.vue'
 // import store from './store/store';
 
 Vue.use(Router)
@@ -19,6 +21,7 @@ Vue.use(Router)
 // })
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -37,12 +40,24 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
+      path: '/amenity/:AmenityId',
+      name: 'amenity',
+      component: ShowAmenity
+    },
+    {
       path: '/centers',
       name: 'centers',
       component: Centers,
       meta: {
         requiresAuth: true
-      }
+      },
+      props: true
+    },
+    {
+      path: '/center/:CenterId',
+      name: 'center',
+      component: ShowCenter,
+      props: true
     },
     {
       path: '/greenways',

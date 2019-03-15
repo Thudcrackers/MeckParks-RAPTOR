@@ -22,12 +22,12 @@
 
 <script>
 import {mapState} from 'vuex'
-import GreenwayInfo from '../components/GreenwayInfo.vue'
+import ShowGreenway from '../components/ShowGreenway.vue'
 
 export default {
     name: 'greenways',
     components: {
-        GreenwayInfo
+        ShowGreenway
     },
     mounted() {
         this.$store.dispatch('getGreenways')

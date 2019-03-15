@@ -1,38 +1,20 @@
 <template>
-    <div class="columns">
-        <div class="column">
-            <div class="buttons">
-                <button class="button mb-3" @click="create">New Center</button>
-                <button class="button is-primary" :disabled="!selected" @click="show(selected)">Details</button>
-            </div>
-            <b-select v-model="perPage">
-                <option value="5">5 per page</option>
-                <option value="10">10 per page</option>
-                <option value="15">15 per page</option>
-                <option value="20">20 per page</option>
-            </b-select>
-            <b-table striped hover :data="centers" :columns="fields" :selected.sync="selected" :paginated="true" :per-page="perPage" :current-page.sync="currentPage" :order="'isCentered'">
-            </b-table>
-            <b-modal :active.sync="isShowModalActive" has-modal-card>
-                <center-info :center="center" :AmenityList="AmenityList" :AmenityTypes="AmenityTypes"></center-info>
-            </b-modal>
-            <b-modal :active.sync="isCreateModalActive" has-modal-card>
-                <create-center :center="center"></create-center>
-            </b-modal>
-        </div>
+    <div>
+        <centers-list v-if="page=='list'" :centers="centers" @show="show($event)"></centers-list>
+        <show-center v-if="page=='show'" :center="center" @back="page='list'" @editAmenity="editAmenity($event)"></show-center>
+        <show-amenity v-if="page=='amenity'" :amenity="amenity" @back="page='list'"></show-amenity>
     </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import CenterInfo from '../components/CenterInfo.vue'
-import CreateCenter from '../components/CreateCenter.vue'
+
+import CentersList from '../components/CentersList.vue'
 
 export default {
     name: 'centers',
     components: {
-        CenterInfo,
-        CreateCenter
+        CentersList
     },
     mounted() {
         this.$store.dispatch('getCenters')
@@ -42,41 +24,9 @@ export default {
     ]),
     data() {
         return {
-            fields: [
-                {
-                    field: "Name",
-                    label: "Name"
-                },
-                {
-                    field: "Address1",
-                    label: "Address"
-                },
-                {
-                    field: "City",
-                    label: "City"
-                },
-                {
-                    field: "State",
-                    label: "State"
-                },
-                {
-                    field: "Phone",
-                    label: "Phone"
-                },
-                {
-                    field: "Description",
-                    label: "Description"
-                }
-            ],
-            currentPage: 1,
-            perPage: 5,
-            selected: null,
-            isShowModalActive: false,
-            isCreateModalActive: false,
+            page: "list",
             center: null,
-            newCenter: {},
-            AmenityList: [],
-            AmenityTypes: []
+            amenity: null
         }
     },
     methods: {
@@ -90,32 +40,13 @@ export default {
             }
         },
         show(selected) {
-            this.axios.get('Center/GetCenterById/'+selected.CenterId)
-            .then((res) => {
-            if (res.status === 200) {
-                    this.center = res.data.Center
-                }
-            })
-            this.axios.get('Amenity/GetAmenityByCenterId/'+selected.CenterId)
-            .then((res) => {
-                if (res.status === 200) {
-                    this.AmenityList = res.data.AmenityList
-                }
-            })
-            this.axios.get('Amenity/GetAmenitiesTypesAll')
-            .then((res) => {
-                if (res.status === 200) {
-                    this.AmenityTypes = res.data
-                }
-            })
-            this.isShowModalActive = true
+            this.center = selected
+            this.page = "show"
         },
-        edit(row) {
-            this.console.log(row)
-        },
-        destroy() {
-            this.console.log("Destroy not implemented")
-        },
+        editAmenity(amenity) {
+            this.amenity = amenity
+            this.page = "amenity"
+        }
     }
 }
 </script>
