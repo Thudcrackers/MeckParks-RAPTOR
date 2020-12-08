@@ -1,21 +1,5 @@
 # RAPTOR
 
-## Project setup
-```
-npm install
-```
+Cancelled project for Mecklenburg County P&R
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+Was intended to be an admin panel but was dropped
